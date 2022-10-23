@@ -1,0 +1,37 @@
+blog
+=> admin
+=> user
+=> articles
+name, username, email(optional), password, profile image(default), tokens
+articles=> title, body, image, comments:[], likes:[]
+=======================================================================
+users:
+register -- done
+login  -- done
+logout  -- done
+logoutall  -- done
+profile  -- done
+editprofile  -- done
+addImgProfile
+================================
+only user type
+likeArticle
+commentArticle
+remove my comments 
+remove my likes
+show all articles -- done
+show single articles  -- done
+================================
+only admin:
+add admin  -- 
+remove user  -- 
+remove admin  -- 
+show all users  -- done
+show all admins  -- done
+add articles   -- done
+show articles   -- done
+edit articles   -- done
+delete article  -- done
+delete articles  -- done
+show articles comments 
+remove comments
