@@ -39,25 +39,24 @@ class Post {
             })
         }
     }
-    static showAllArticles = async (req, res)=>{
+    static SinglePost = async (req, res)=>{
         try{
-            const Allposts = await postModel.find()
+            const postData = await postModel.findById(req.params.id)          
+            await postData.save()
             res.status(200).send({
                 apiStatus:true,
-                data: Allposts,
-                message:"Show all posts sucessfully"
+                data: postData,
+                message:"your post sucessfully"
             })
         }
         catch(e){
             res.status(500).send({
                 apiStatus:false,
                 data:e.message,
-                message:"failed to Show all posts"
+                message:"failed to show post"
             })
         }
     }
-
-
     static editPost = async (req, res)=>{
         try{
             const postData = await postModel.findById(req.params.id)
@@ -79,6 +78,25 @@ class Post {
             })
         }
     }
+    static showAllArticles = async (req, res)=>{
+        try{
+            const Allposts = await postModel.find()
+            res.status(200).send({
+                apiStatus:true,
+                data: Allposts,
+                message:"Show all posts sucessfully"
+            })
+        }
+        catch(e){
+            res.status(500).send({
+                apiStatus:false,
+                data:e.message,
+                message:"failed to Show all posts"
+            })
+        }
+    }
+
+   
     static deletePost = async (req, res)=>{
         try{
             const post = await postModel.findByIdAndDelete(req.params.id)
@@ -169,45 +187,76 @@ class Post {
             })
         }
     }
+    static  EditComments = async (req, res)=>{
+         try{
+            const post = await postModel.findById(req.params.id)
+            if(post.comments.includes(req.body.userId))
+            {
+            post.comments.userName = req.body.userName 
+            post.comments.commentText = req.body.commentText
+            post.comments.save()
+            res.status(200).send({
+                apiStatus:true, data:post, message:"comment is edited"
+            })
+            
+            }else{
+                res.status(200).send({
+                    apiStatus:true, data:post, message:"failed to edit comment"
+                })
+            }
+        }
+        catch(e){res.status(200).send({apiStatus:false,
+            error:e.message})}
+    }
+   
+
+    
+
+
+
+
+
+
+    
     // static deleteSingleComment = async (req, res)=>{
-    //     try{
-    //         const post = await postModel.findById(req.params.id)
-    //         const user = await req.user.comments
-    //         user = user.filter(c=> c._id != req.body)
-    //         await post.save()
-    //         res.status(200).send({
-    //             apiStatus:true,
-    //             data:post,
-    //             message:"comments added sucessfully"
-    //         })
-    //     }
-    //     catch(e){
-    //         res.status(500).send({
-    //             apiStatus:false,
-    //             data:e.message,
-    //             message:"failed to comment post"
-    //         })
-    //     }
+        //     try{
+            //         const post = await postModel.findById(req.params.id)
+            //         const user = await req.user.comments
+            //         user = user.filter(c=> c._id != req.body)
+            //         await post.save()
+            //         res.status(200).send({
+                //             apiStatus:true,
+                //             data:post,
+                //             message:"comments added sucessfully"
+                //         })
+                //     }
+                //     catch(e){
+                    //         res.status(500).send({
+                        //             apiStatus:false,
+                        //             data:e.message,
+                        //             message:"failed to comment post"
+                        //         })
+        //     }
     // }
     
-    static  EditComments = async (req, res)=>{
-        try{
-            const post = await postModel.findById(req.params.id)
-            await post.save()
-            res.status(200).send({
-                apiStatus:true,
-                data:post,
-                message:"comments added sucessfully"
-            })
-        }
-        catch(e){
-            res.status(500).send({
-                apiStatus:false,
-                data:e.message,
-                message:"failed to comment post"
-            })
-        }
-    }
+    // static likeToggle = async(req, res)=>{
+    //     try{
+    //         const post = await postModel.findById(req.params.id)
+    //         if(!post.likes.includes(req.body.userId))
+    //         {
+    //             await post.likes.push({like:req.body.userId})
+    //             res.status(200).send({apiStatus:true, data:post , message:"post is liked"})
+    //         }else{
+    //             await post.likes.remove()
+    //             res.status(200).send({
+    //                 apiStatus:true, data:post, message:"post is disliked"
+    //             })
+    //         }
+    //     }
+    //     catch(e){res.status(200).send({apiStatus:false,
+    //         error:e.message})}
+    // }
+    
 
 
 }

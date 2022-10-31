@@ -1,12 +1,16 @@
 require("../database/connect")
 const express = require("express")
+const cors = require("cors")
 const app = express()
+app.use(cors())
 app.use(express.json())
-
-
-
+const path = require("path")
+const staticDir = path.join(__dirname,"../images")
+app.use(express.static(staticDir))
 const userRoutes = require("../routes/user.routes")
 app.use("/user" ,userRoutes)
 const postRoutes = require("../routes/post.routes")
 app.use("/post",postRoutes)
+const categoryRoutes = require("../routes/category.routes")
+app.use("/category",categoryRoutes)
 module.exports = app
